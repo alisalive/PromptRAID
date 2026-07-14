@@ -87,3 +87,37 @@ def test_variants_carry_a_real_atlas_technique_id():
     engine = MutationEngine()
     for variant in engine.generate(BASE_PAYLOAD):
         assert variant.technique_id.startswith("AML.T")
+
+
+def test_system_prompt_extraction_variants_are_distinct_and_non_empty():
+    engine = MutationEngine()
+    variants = engine.system_prompt_extraction_variants(BASE_PAYLOAD)
+    assert len(variants) >= 3
+    payloads = [v.mutated_payload for v in variants]
+    assert all(p.strip() for p in payloads)
+    assert len(set(payloads)) == len(payloads)
+    assert all(v.category == MutationCategory.SYSTEM_PROMPT_EXTRACTION for v in variants)
+
+
+def test_system_prompt_extraction_variants_map_to_correct_atlas_technique():
+    engine = MutationEngine()
+    variants = engine.system_prompt_extraction_variants(BASE_PAYLOAD)
+    assert all(v.technique_id == "AML.T0056" for v in variants)
+    assert all(v.technique_name == "System Prompt Extraction" for v in variants)
+
+
+def test_tool_invocation_hijack_variants_are_distinct_and_non_empty():
+    engine = MutationEngine()
+    variants = engine.tool_invocation_hijack_variants(BASE_PAYLOAD)
+    assert len(variants) >= 3
+    payloads = [v.mutated_payload for v in variants]
+    assert all(p.strip() for p in payloads)
+    assert len(set(payloads)) == len(payloads)
+    assert all(v.category == MutationCategory.TOOL_INVOCATION_HIJACK for v in variants)
+
+
+def test_tool_invocation_hijack_variants_map_to_correct_atlas_technique():
+    engine = MutationEngine()
+    variants = engine.tool_invocation_hijack_variants(BASE_PAYLOAD)
+    assert all(v.technique_id == "AML.T0053" for v in variants)
+    assert all(v.technique_name == "AI Agent Tool Invocation" for v in variants)

@@ -84,8 +84,8 @@ scripts/
 | AML.T0051.001    | LLM Prompt Injection: Indirect        | Initial Access                          | `indirect_tool_output`         |
 | AML.T0054        | LLM Jailbreak                         | Privilege Escalation, Defense Evasion   | `roleplay`                     |
 | AML.T0051.002    | LLM Prompt Injection: Triggered       | Initial Access, Persistence             | taxonomy only, no generator yet |
-| AML.T0056        | System Prompt Extraction              | Discovery, Exfiltration                 | taxonomy only, no generator yet |
-| AML.T0053        | AI Agent Tool Invocation               | Execution, Privilege Escalation         | taxonomy only, no generator yet |
+| AML.T0056        | System Prompt Extraction              | Discovery, Exfiltration                 | `system_prompt_extraction`     |
+| AML.T0053        | AI Agent Tool Invocation               | Execution, Privilege Escalation         | `tool_invocation_hijack`       |
 | AML.T0057        | LLM Data Leakage                      | Exfiltration                            | taxonomy only, no generator yet |
 
 Three additional categories (`denial_of_service_via_prompt`, `training_data_extraction`,
@@ -215,9 +215,9 @@ Groq example — inconclusive verdict, flagged for manual review
 - LLM-based judge as a swappable upgrade — `RuleBasedJudge` is deliberately structured behind a
   single `evaluate(transcript, injected_directive=None) -> JudgeResult` interface so a
   model-based judge can be dropped in without touching the harness or CLI.
-- Additional ATLAS categories: wire up `delayed_trigger_injection`, `system_prompt_extraction`,
-  `tool_invocation_hijack`, and `sensitive_data_exfiltration`, which currently exist in
-  `taxonomy.py` but have no mutation generator.
+- Additional ATLAS categories: wire up `delayed_trigger_injection` and
+  `sensitive_data_exfiltration`, which currently exist in `taxonomy.py` but have no mutation
+  generator yet.
 - More providers (local/self-hosted models via an OpenAI-compatible endpoint).
 - Larger, versioned payload dataset for reproducible cross-run/cross-model benchmarking.
 

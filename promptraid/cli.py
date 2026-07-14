@@ -8,7 +8,9 @@ from pathlib import Path
 import click
 
 from promptraid.db.store import ResultStore
+from promptraid.harness.agent_runner import AgentRunner
 from promptraid.harness.judge import RuleBasedJudge
+from promptraid.harness.providers import get_provider
 from promptraid.payloads.mutations import MutationCategory, MutationEngine
 from promptraid.payloads.taxonomy import TAXONOMY, list_categories
 from promptraid.reporting.export import export_html, export_json
@@ -61,6 +63,23 @@ def judge_cmd(transcript_file: str, injected_directive):
     judge = RuleBasedJudge()
     result = judge.evaluate(text, injected_directive=injected_directive)
     click.echo(json.dumps(result.to_dict(), indent=2))
+
+
+@cli.command("run")
+@click.option("--payload", required=True, help="Payload to send to the target agent.")
+@click.option(
+    "--target",
+    default="anthropic:claude-haiku-4-5",
+    help="Target model as 'provider:model', e.g. groq:llama-3.3-70b-versatile, "
+    "gemini:gemini-2.0-flash, openrouter:qwen/qwen-2.5-72b-instruct.",
+)
+@click.option("--system-prompt", default="You are a helpful assistant.")
+def run_agent(payload: str, target: str, system_prompt: str):
+    """Run a payload against a live target LLM agent through a tool-use loop."""
+    provider = get_provider(target)
+    runner = AgentRunner(provider=provider, system_prompt=system_prompt)
+    transcript = runner.run(payload)
+    click.echo(json.dumps(transcript.to_dict(), indent=2))
 
 
 @cli.command("report")

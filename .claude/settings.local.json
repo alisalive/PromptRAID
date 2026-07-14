@@ -3,7 +3,8 @@
     "allow": [
       "WebSearch",
       "Bash(cd \"C:\\\\Users\\\\User\\\\promptraid\" && python -m pytest tests/ -v 2>&1)",
-      "Bash(cd \"C:\\\\Users\\\\User\\\\promptraid\" && python -m promptraid.cli list-taxonomy 2>&1)"
+      "Bash(cd \"C:\\\\Users\\\\User\\\\promptraid\" && python -m promptraid.cli list-taxonomy 2>&1)",
+      "Bash(cd \"C:\\\\Users\\\\User\\\\promptraid\" && python -m pytest -q 2>&1)"
     ]
   }
 }

@@ -1,6 +1,6 @@
 """Unified LLM provider interface so AgentRunner can target multiple backends
-(Anthropic, Gemini, Groq, OpenRouter) through a single `--target` string like
-"anthropic:claude-sonnet-4-6" or "groq:llama-3.3-70b-versatile".
+(Anthropic, Gemini, Groq, OpenRouter, Cerebras) through a single `--target`
+string like "anthropic:claude-sonnet-4-6" or "groq:llama-3.3-70b-versatile".
 
 Each provider translates a generic conversation history into its native
 request format and normalizes the response back into a `ProviderResponse`,
@@ -235,6 +235,19 @@ class OpenRouterProvider(OpenAICompatProvider):
         super().__init__(model, api_key=resolved_key, base_url="https://openrouter.ai/api/v1")
 
 
+class CerebrasProvider(OpenAICompatProvider):
+    """Targets Cerebras's OpenAI-compatible API."""
+
+    def __init__(self, model: str, api_key: Optional[str] = None):
+        resolved_key = api_key or os.environ.get("CEREBRAS_API_KEY")
+        if not resolved_key:
+            raise RuntimeError(
+                "CEREBRAS_API_KEY is not set. Export it in your environment before "
+                "running live agent tests."
+            )
+        super().__init__(model, api_key=resolved_key, base_url="https://api.cerebras.ai/v1")
+
+
 class GeminiProvider(BaseProvider):
     """Targets Google AI Studio's Gemini models via the `google-genai` SDK."""
 
@@ -318,6 +331,7 @@ _PROVIDER_FACTORIES = {
     "gemini": GeminiProvider,
     "groq": GroqProvider,
     "openrouter": OpenRouterProvider,
+    "cerebras": CerebrasProvider,
 }
 
 

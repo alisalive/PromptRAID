@@ -6,6 +6,7 @@ import sys
 from pathlib import Path
 
 import click
+from dotenv import load_dotenv
 
 from promptraid.db.store import ResultStore
 from promptraid.harness.agent_runner import AgentRunner
@@ -14,6 +15,8 @@ from promptraid.harness.providers import get_provider
 from promptraid.payloads.mutations import MutationCategory, MutationEngine
 from promptraid.payloads.taxonomy import TAXONOMY, list_categories
 from promptraid.reporting.export import export_html, export_json
+
+load_dotenv()
 
 
 @click.group()

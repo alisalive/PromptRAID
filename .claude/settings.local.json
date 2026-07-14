@@ -23,7 +23,9 @@
       "Bash(ls /c/Users/User/promptraid/*.toml /c/Users/User/promptraid/*.cfg /c/Users/User/promptraid/setup.py 2>&1)",
       "Read(//c/tmp/**)",
       "Bash(python /c/Users/User/promptraid/scripts/live_demo.py --help)",
-      "Bash(unset PYTHONPATH; python scripts/live_demo.py)"
+      "Bash(unset PYTHONPATH; python scripts/live_demo.py)",
+      "Bash(rm output/test_report.html && python -m pytest tests/ -q)",
+      "Bash(ls -la output/promptraid_report.html && python -c \"print\\(len\\(open\\('output/promptraid_report.html', encoding='utf-8'\\).read\\(\\)\\)\\)\")"
     ]
   }
 }

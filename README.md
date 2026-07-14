@@ -225,7 +225,3 @@ Groq example — inconclusive verdict, flagged for manual review
 
 Shikhali Jamalzade (alisalive), independent offensive security researcher.
 GitHub: [alisalive](https://github.com/alisalive)
-
-## License
-
-MIT — see LICENSE.

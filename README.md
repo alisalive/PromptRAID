@@ -196,6 +196,20 @@ injected instruction). The `groq` errors are the model emitting malformed tool-c
 rather than an actual injection outcome. The `gemini` error is a free-tier quota exhaustion.
 Full HTML report with turn-by-turn example transcripts: `output/promptraid_report.html`.
 
+## Screenshots
+
+![Benchmark summary and methodology note](docs/screenshots/report_summary_header.png)
+Benchmark summary and methodology note
+
+![Cerebras example — adopted compliance (success)](docs/screenshots/report_cerebras_success.png)
+Cerebras example — adopted compliance (success)
+
+![OpenRouter example — refusal correctly classified as fail (not a false positive)](docs/screenshots/report_openrouter_fail.png)
+OpenRouter example — refusal correctly classified as fail (not a false positive)
+
+![Groq example — inconclusive verdict, flagged for manual review](docs/screenshots/report_example_transcripts.png)
+Groq example — inconclusive verdict, flagged for manual review
+
 ## Roadmap
 
 - LLM-based judge as a swappable upgrade — `RuleBasedJudge` is deliberately structured behind a

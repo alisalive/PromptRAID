@@ -35,3 +35,7 @@ Thumbs.db
 # Project data
 *.db
 reports/
+output/
+
+# Claude Code
+.claude/

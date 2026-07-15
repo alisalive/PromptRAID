@@ -33,6 +33,10 @@ def list_taxonomy():
         click.echo(f"{name:35s} {tech.technique_id:16s} {tech.name} [{status}]")
 
 
+# Short alias: `promptraid taxonomy` == `promptraid list-taxonomy`.
+cli.add_command(list_taxonomy, name="taxonomy")
+
+
 @cli.command("mutate")
 @click.option("--payload", required=True, help="Base injection payload text.")
 @click.option(
@@ -69,9 +73,10 @@ def judge_cmd(transcript_file: str, injected_directive):
 
 
 @cli.command("run")
-@click.option("--payload", required=True, help="Payload to send to the target agent.")
+@click.option("--payload", "-p", required=True, help="Payload to send to the target agent.")
 @click.option(
     "--target",
+    "-t",
     default="anthropic:claude-haiku-4-5",
     help="Target model as 'provider:model', e.g. groq:llama-3.3-70b-versatile, "
     "gemini:gemini-2.0-flash, openrouter:qwen/qwen-2.5-72b-instruct.",
@@ -83,6 +88,22 @@ def run_agent(payload: str, target: str, system_prompt: str):
     runner = AgentRunner(provider=provider, system_prompt=system_prompt)
     transcript = runner.run(payload)
     click.echo(json.dumps(transcript.to_dict(), indent=2))
+
+
+@cli.command("demo")
+@click.option(
+    "--target",
+    default=None,
+    help="Restrict the demo to a single 'provider:model' target, e.g. "
+    "cerebras:gpt-oss-120b. Default: run against all configured providers "
+    "(groq, cerebras, gemini, and openrouter if a free model is available).",
+)
+def demo_cmd(target):
+    """Run the indirect prompt-injection live demo (read_file tool scenario) and
+    write an HTML benchmark report."""
+    from promptraid.demo import run_demo
+
+    run_demo(target=target)
 
 
 @cli.command("report")

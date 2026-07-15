@@ -98,18 +98,46 @@ this table until confirmed.
 
 ## Installation
 
+### Option A — pipx (recommended for just using the CLI)
+
+On Debian/Kali and other externally-managed-environment (PEP 668) systems, a bare
+`pip install -e .` fails with `error: externally-managed-environment` unless a venv is
+already active. [pipx](https://pypa.github.io/pipx/) avoids that entirely: it installs
+the CLI and all its dependencies into its own isolated environment automatically, with no
+manual venv steps and no `--break-system-packages`.
+
+```bash
+# install pipx first, if you don't have it:
+#   sudo apt install pipx        # Kali/Debian
+#   pip install --user pipx      # other platforms
+git clone <this-repo>
+cd promptraid
+pipx install .
+# ...or, once usable from a URL: pipx install git+<repo-url>
+cp .env.example .env
+# edit .env and fill in at least one provider key
+# (ANTHROPIC_API_KEY / GEMINI_API_KEY / GROQ_API_KEY / OPENROUTER_API_KEY / CEREBRAS_API_KEY)
+```
+
+`promptraid <command>` is then available directly on `PATH`, from any directory, with no
+`python -m` or `PYTHONPATH` needed.
+
+### Option B — venv (for development)
+
 ```bash
 git clone <this-repo>
 cd promptraid
+python -m venv .venv
+source .venv/bin/activate   # .venv\Scripts\activate on Windows
 pip install -r requirements.txt
 cp .env.example .env
 # edit .env and fill in at least one provider key
 # (ANTHROPIC_API_KEY / GEMINI_API_KEY / GROQ_API_KEY / OPENROUTER_API_KEY / CEREBRAS_API_KEY)
 ```
 
-Run `pip install -e .` to install the `promptraid` console entry point (declared in
-`pyproject.toml`) so `promptraid <command>` works directly from any directory, without
-`python -m` or setting `PYTHONPATH`.
+Run `pip install -e .` (inside the venv) to also install the `promptraid` console entry
+point (declared in `pyproject.toml`) so `promptraid <command>` works directly from any
+directory, without `python -m` or setting `PYTHONPATH`.
 
 ## Usage
 
